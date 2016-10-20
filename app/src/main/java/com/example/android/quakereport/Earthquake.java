@@ -1,33 +1,45 @@
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.android.quakereport;
 
 /**
- * Created by Abhishek on 10/11/2016.
- */
-
-/**
- * Class to store all the data of one earthquake instance including score, place and time
+ * An {@link Earthquake} object contains information related to a single earthquake.
  */
 public class Earthquake {
 
-    //To store the Magnitude of Earthquake on richter scale
+    /** Magnitude of the earthquake */
     private double mMagnitude;
 
-    //To store the Location where Earthquake took place
+    /** Location of the earthquake */
     private String mLocation;
 
-    //To store the Date when Earthquake took place
+    /** Time of the earthquake */
     private long mTimeInMilliseconds;
 
-    //To store the URL of the Earthquake details for current place
+    /** Website URL of the earthquake */
     private String mUrl;
 
     /**
      * Constructs a new {@link Earthquake} object.
      *
-     * @param magnitude          is the magnitude (size) of the earthquake
-     * @param location           is the city location of the earthquake
+     * @param magnitude is the magnitude (size) of the earthquake
+     * @param location is the location where the earthquake happened
      * @param timeInMilliseconds is the time in milliseconds (from the Epoch) when the
      *                           earthquake happened
+     * @param url is the website URL to find more details about the earthquake
      */
     public Earthquake(double magnitude, String location, long timeInMilliseconds, String url) {
         mMagnitude = magnitude;
@@ -37,36 +49,28 @@ public class Earthquake {
     }
 
     /**
-     * To get the Magnitude of Earthquake
-     *
-     * @return Magnitude of Earthquake
+     * Returns the magnitude of the earthquake.
      */
     public double getMagnitude() {
         return mMagnitude;
     }
 
     /**
-     * To get the name of Location where Earthquake took place
-     *
-     * @return Location where Earthquake took place
+     * Returns the location of the earthquake.
      */
     public String getLocation() {
         return mLocation;
     }
 
     /**
-     * To get the Date on which Earthquake occurred for the Location
-     *
-     * @return Date when Earthquake occurred
+     * Returns the time of the earthquake.
      */
     public long getTimeInMilliseconds() {
         return mTimeInMilliseconds;
     }
 
     /**
-     * To get the URL to redirect user to fetch more details of the Earthquake from the webpage
-     *
-     * @return
+     * Returns the website URL to find more information about the earthquake.
      */
     public String getUrl() {
         return mUrl;

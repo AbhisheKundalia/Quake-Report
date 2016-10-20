@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!-- Copyright (C) 2016 The Android Open Source Project
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -10,12 +11,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!-- Background circle for the magnitude value -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="@color/magnitude1" />
-    <size
-        android:width="36dp"
-        android:height="36dp" />
-    <corners android:radius="18dp" />
-</shape>
+<!-- Layout for our Settings Activity, containing a Preference Fragment -->
+<fragment
+    android:name="com.example.android.quakereport.SettingsActivity$EarthquakePreferenceFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.quakereport.SettingsActivity">
+</fragment>
