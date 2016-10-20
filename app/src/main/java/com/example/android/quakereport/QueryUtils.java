@@ -53,6 +53,16 @@ public final class QueryUtils {
     }
 
     public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+
+        Log.e(LOG_TAG,"Inside fetchEarthquakeData:\n");
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         //Create URL
         URL url = createUrl(requestUrl);
 

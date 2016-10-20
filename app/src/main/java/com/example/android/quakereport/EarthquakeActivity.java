@@ -20,14 +20,35 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-public class EarthquakeActivity extends AppCompatActivity {
+import static android.R.attr.order;
+import static android.R.id.empty;
+
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
+
+    /**
+     * Constant value for the earthquake loader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
+    private static final int EARTHQUAKE_LOADER_ID = 1;
+
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
+
+    private ProgressBar loadingBar;
+
 
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
 
@@ -40,12 +61,12 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        //Execute Asyn task on backround thread
-        EarthquakeAsyncTask earthquakeAsyncTask = new EarthquakeAsyncTask();
-        earthquakeAsyncTask.execute(USGS_URL);
-
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        //Set empty view
+        mEmptyStateTextView = (TextView)findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter} of earthquakes with empty list of earthquakes
         mEarthquakeAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -53,6 +74,15 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(mEarthquakeAdapter);
+
+        // Get a reference to the LoaderManager, in order to interact with loaders.
+        LoaderManager loaderManager = getLoaderManager();
+
+        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+        // because this activity implements the LoaderCallbacks interface).
+        Log.e(LOG_TAG, "Initloader is being called");
+        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
         //Set onclick listener for the views
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,29 +107,43 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        Log.e(LOG_TAG,"Inside OncreateLoader:\n");
+        return new EarthquakeLoader(this, USGS_URL);
+    }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        Log.e(LOG_TAG,"Inside onLoadFinished:\n");
 
-        @Override
-        protected List<Earthquake> doInBackground(String... url) {
-
-            //IF Url is empty or null
-            if (url.length < 1 || url == null) {
-                return null;
-            }
-            return QueryUtils.fetchEarthquakeData(url[0]);
+        //Set loading bar to gone on load complete
+        loadingBar = (ProgressBar)findViewById(R.id.loading_spinners);
+        if (loadingBar != null) {
+            loadingBar.setVisibility(View.GONE);
         }
 
-        @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
+        //Clears the data of previous earthquake load
+        mEarthquakeAdapter.clear();
 
-            //Clears the data of previous earthquake load
-            mEarthquakeAdapter.clear();
-
-            if(earthquakes != null || !earthquakes.isEmpty())
+        if (earthquakes != null || !earthquakes.isEmpty()){
+           // mEmptyStateTextView.setText(R.string.no_earthquakes);/*
             mEarthquakeAdapter.addAll(earthquakes);
         }
+        else
+        {
+            mEmptyStateTextView.setText(R.string.no_earthquakes);
+        }
 
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+
+        Log.e(LOG_TAG,"Inside OnLoaderReset:\n");
+
+        //Clears the data of previous earthquake load
+        mEarthquakeAdapter.clear();
 
     }
 }
