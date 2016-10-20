@@ -56,11 +56,11 @@ public final class QueryUtils {
 
         Log.e(LOG_TAG,"Inside fetchEarthquakeData:\n");
 
-        try {
+        /*try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         //Create URL
