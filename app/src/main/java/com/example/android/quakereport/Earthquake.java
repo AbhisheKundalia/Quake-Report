@@ -1,7 +1,5 @@
 package com.example.android.quakereport;
 
-import java.util.Date;
-
 /**
  * Created by Abhishek on 10/11/2016.
  */
@@ -18,31 +16,38 @@ public class Earthquake {
     private String mLocation;
 
     //To store the Date when Earthquake took place
-    private String mDate;
+    private long mTimeInMilliseconds;
 
-    /*
-    * Create a new Earthquake object.
-    *
-    * @param vMagnitude is the score of Earthquake on richter scale (e.g. 0.1-9.9)
-    * @param vLocation is the corresponding place where Earthquake took place (e.g. Bangalore)
-    * @param vDate is the date when the respective Earthquake took place (e.g. Feb 2,2016
-    * */
-    public Earthquake(double vMagnitude, String vLocation, String vDate){
-        mMagnitude = vMagnitude;
-        mLocation = vLocation;
-        mDate = vDate;
+    //To store the URL of the Earthquake details for current place
+    private String mUrl;
+
+    /**
+     * Constructs a new {@link Earthquake} object.
+     *
+     * @param magnitude          is the magnitude (size) of the earthquake
+     * @param location           is the city location of the earthquake
+     * @param timeInMilliseconds is the time in milliseconds (from the Epoch) when the
+     *                           earthquake happened
+     */
+    public Earthquake(double magnitude, String location, long timeInMilliseconds, String url) {
+        mMagnitude = magnitude;
+        mLocation = location;
+        mTimeInMilliseconds = timeInMilliseconds;
+        mUrl = url;
     }
 
     /**
      * To get the Magnitude of Earthquake
+     *
      * @return Magnitude of Earthquake
      */
-    public String getMagnitude(){
-        return String.valueOf(mMagnitude);
+    public double getMagnitude() {
+        return mMagnitude;
     }
 
     /**
      * To get the name of Location where Earthquake took place
+     *
      * @return Location where Earthquake took place
      */
     public String getLocation() {
@@ -51,9 +56,19 @@ public class Earthquake {
 
     /**
      * To get the Date on which Earthquake occurred for the Location
+     *
      * @return Date when Earthquake occurred
      */
-    public String getDate() {
-        return mDate;
+    public long getTimeInMilliseconds() {
+        return mTimeInMilliseconds;
+    }
+
+    /**
+     * To get the URL to redirect user to fetch more details of the Earthquake from the webpage
+     *
+     * @return
+     */
+    public String getUrl() {
+        return mUrl;
     }
 }
